@@ -11,7 +11,7 @@ on:
         default: false
   push:
     tags:
-      - "v*+mc26*"
+      - "v*mc26*"
 
 permissions:
   contents: write
