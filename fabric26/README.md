@@ -30,3 +30,9 @@ cd fabric26
 ```
 
 The jar lands in `fabric26/build/libs/`. Version numbers live in `fabric26/gradle.properties`.
+
+## Releasing
+
+The `release (fabric 26.x)` workflow builds this folder and publishes the jar as a GitHub Release.
+Run it from the repo's **Actions** tab ("Run workflow"), or push a tag such as `v2.0+mc26.3`.
+Bump `mod_version` in `gradle.properties` before each new release so the tag is new.

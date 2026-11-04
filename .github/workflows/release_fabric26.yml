@@ -1,0 +1,70 @@
+name: release (fabric 26.x)
+
+# Builds the standalone 26.x Fabric jar (fabric26/) and publishes it as a GitHub Release.
+# Run it from the Actions tab ("Run workflow"), or push a tag like v2.0+mc26.3.
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: Mark as pre-release
+        type: boolean
+        default: false
+  push:
+    tags:
+      - "v*+mc26*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: fabric26
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew build --stacktrace --no-daemon
+
+      - name: Read versions
+        id: meta
+        run: |
+          prop() { grep -E "^$1\s*=" gradle.properties | head -1 | cut -d= -f2 | tr -d ' \r'; }
+          MOD=$(prop mod_version); MC=$(prop minecraft_version)
+          echo "tag=v${MOD}+mc${MC}" >> "$GITHUB_OUTPUT"
+          echo "mc=${MC}" >> "$GITHUB_OUTPUT"
+          echo "fapi=$(prop fabric_api_version)" >> "$GITHUB_OUTPUT"
+          echo "loader=$(prop loader_version)" >> "$GITHUB_OUTPUT"
+          echo "modmenu=$(prop modmenu_version)" >> "$GITHUB_OUTPUT"
+          ls build/libs
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || steps.meta.outputs.tag }}
+          name: Zume ${{ steps.meta.outputs.tag }} (Fabric ${{ steps.meta.outputs.mc }})
+          target_commitish: ${{ github.sha }}
+          prerelease: ${{ inputs.prerelease || false }}
+          fail_on_unmatched_files: true
+          files: |
+            fabric26/build/libs/zume-fabric-*.jar
+            !fabric26/build/libs/*-sources.jar
+          body: |
+            Zume zoom mod for **Minecraft ${{ steps.meta.outputs.mc }}** on Fabric.
+
+            **Install:** drop the jar into your `mods` folder together with:
+            - [Fabric API](https://modrinth.com/mod/fabric-api) `${{ steps.meta.outputs.fapi }}` or newer (required)
+            - [Mod Menu](https://modrinth.com/mod/modmenu) `${{ steps.meta.outputs.modmenu }}` (optional, adds the Config button)
+
+            Built against Fabric Loader `${{ steps.meta.outputs.loader }}`. Config lives in `.minecraft/global/zume.json5` and reloads live.
