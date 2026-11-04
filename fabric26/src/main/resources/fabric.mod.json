@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"id": "zume",
+	"version": "${mod_version}",
+	"name": "Zume",
+	"description": "An over-engineered Zoom mod by Nolij",
+	"authors": ["Nolij (@xdMatthewbx#1337)"],
+	"contact": {
+		"website": "https://modrinth.com/mod/zume",
+		"repo": "https://github.com/Nolij/Zume",
+		"issues": "https://github.com/Nolij/Zume/issues"
+	},
+	"license": "OSL-3.0",
+	"icon": "icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["dev.nolij.zume.fabric26.Fabric26Zume"],
+		"modmenu": ["dev.nolij.zume.fabric26.modmenu.ZumeModMenuIntegration"]
+	},
+	"mixins": ["zume.mixins.json"],
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"minecraft": ">=26.1",
+		"fabric-key-mapping-api-v1": "*"
+	}
+}
