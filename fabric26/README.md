@@ -12,10 +12,10 @@ lang files) is compiled in unchanged. Only the Minecraft-facing glue is new:
 | Feature | Where |
 | --- | --- |
 | Zoom / Zoom In / Zoom Out keybinds (Z, =, -) | `ZumeKeyBind`, `Fabric26Zume` |
-| Smooth FOV zoom | `GameRendererMixin` (`getFov`, `render`) |
+| Smooth FOV zoom | `GameRendererMixin` (`render`, easing) + `CameraMixin` (`calculateFov`) |
 | Scroll-to-zoom (and in spectator) | `MouseHandlerMixin` (`onScroll`) |
 | Cinematic camera + sensitivity floor while zoomed | `MouseHandlerMixin` (`turnPlayer`) |
-| Third-person zoom distance | `CameraMixin` (`setup` → `getMaxZoom`) |
+| Third-person zoom distance | `CameraMixin` (`alignWithEntity` → `getMaxZoom`) |
 | Mod Menu "Config" button opens `zume.json5` | `ZumeModMenuIntegration` |
 
 Not carried over: the Embeddium options page (Embeddium does not exist for 26.x).

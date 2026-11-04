@@ -27,7 +27,7 @@ public class Fabric26Zume implements ClientModInitializer, IZumeImplementation {
 	
 	@Override
 	public boolean isZoomPressed() {
-		return Minecraft.getInstance().screen == null && ZumeKeyBind.ZOOM.isPressed();
+		return Minecraft.getInstance().gui.screen() == null && ZumeKeyBind.ZOOM.isPressed();
 	}
 	
 	@Override

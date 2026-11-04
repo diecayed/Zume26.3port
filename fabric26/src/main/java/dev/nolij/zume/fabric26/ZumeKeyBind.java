@@ -3,13 +3,12 @@ package dev.nolij.zume.fabric26;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 
 public enum ZumeKeyBind {
 	
-	ZOOM("zume.zoom", GLFW.GLFW_KEY_Z),
-	ZOOM_IN("zume.zoom_in", GLFW.GLFW_KEY_EQUAL),
-	ZOOM_OUT("zume.zoom_out", GLFW.GLFW_KEY_MINUS),
+	ZOOM("zume.zoom", InputConstants.KEY_Z),
+	ZOOM_IN("zume.zoom_in", InputConstants.KEY_EQUALS),
+	ZOOM_OUT("zume.zoom_out", InputConstants.KEY_MINUS),
 	
 	;
 	
@@ -25,7 +24,7 @@ public enum ZumeKeyBind {
 	}
 	
 	ZumeKeyBind(String translationKey, int code) {
-		this.value = new KeyMapping(translationKey, InputConstants.Type.KEYSYM, code, Holder.CATEGORY);
+		this.value = new KeyMapping(translationKey, InputConstants.Type.KEYBOARD, code, Holder.CATEGORY);
 	}
 	
 }

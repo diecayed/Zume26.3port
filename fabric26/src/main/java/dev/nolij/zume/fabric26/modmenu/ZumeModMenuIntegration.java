@@ -16,7 +16,7 @@ public class ZumeModMenuIntegration implements ModMenuApi {
 			@Override
 			protected void init() {
 				Zume.openConfigFile();
-				Minecraft.getInstance().setScreen(parent);
+				Minecraft.getInstance().gui.setScreen(parent);
 			}
 		};
 	}

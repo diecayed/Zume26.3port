@@ -1,6 +1,6 @@
 plugins {
 	// Non-remapping Loom variant used for unobfuscated Minecraft (26.1+)
-	id("net.fabricmc.fabric-loom") version(providers.gradleProperty("loom_version").get())
+	id("net.fabricmc.fabric-loom") // version set in settings.gradle.kts (loom_version)
 }
 
 operator fun String.invoke(): String = providers.gradleProperty(this).get()
@@ -14,7 +14,8 @@ java {
 }
 
 repositories {
-	maven("https://maven.taumc.org/releases") // ZSON, LibNolij
+	maven("https://maven.taumc.org/releases") // LibNolij
+	maven("https://maven.blamejared.com") // ZSON
 	maven("https://maven.terraformersmc.com/releases/") // Mod Menu
 	mavenCentral()
 }
@@ -32,6 +33,10 @@ dependencies {
 	implementation("net.fabricmc.fabric-api:fabric-api:${"fabric_api_version"()}")
 	
 	compileOnly("org.jetbrains:annotations:26.0.2")
+	
+	// ../api uses Manifold's unchecked checked-exceptions, same as the root build
+	compileOnly("systems.manifold:manifold-rt:${"manifold_version"()}")
+	annotationProcessor("systems.manifold:manifold-exceptions:${"manifold_version"()}")
 	compileOnly("com.terraformersmc:modmenu:${"modmenu_version"()}")
 	
 	implementation("dev.nolij:zson:${"zson_version"()}")
@@ -54,4 +59,5 @@ tasks.processResources {
 tasks.withType<JavaCompile>().configureEach {
 	options.encoding = "UTF-8"
 	options.release = 25
+	options.compilerArgs.add("-Xplugin:Manifold no-bootstrap")
 }
