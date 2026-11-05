@@ -58,8 +58,7 @@ jobs:
           prerelease: ${{ inputs.prerelease || false }}
           fail_on_unmatched_files: true
           files: |
-            fabric26/build/libs/zume-fabric-*.jar
-            !fabric26/build/libs/*-sources.jar
+            fabric26/build/libs/zume-fabric-*[0-9].jar
           body: |
             Zume zoom mod for **Minecraft ${{ steps.meta.outputs.mc }}** on Fabric.
 
